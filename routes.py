@@ -9,7 +9,6 @@ def register_routes(app, db):
 
     blockchain = Blockchain()
 
-    counter = 0
     
     @app.route('/')
     def home():
