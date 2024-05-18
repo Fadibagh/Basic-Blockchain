@@ -15,87 +15,22 @@
     
 
     <div class="flex flex-row items-center justify-center mt-10">
-      <form action="/signin" method="post">
-        <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-1">
-          <div class="mb-4">
-            <label class="block text-gray-700 text-sm font-bold mb-2" for="username">
-              Username
-            </label>
-            <input
-              class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="username"
-              type="text"
-              name="username"
-              placeholder="Enter your username"
-            />
-          </div>
-          <div class="mb-6">
-            <label class="block text-gray-700 text-sm font-bold mb-2" for="password">
-              Password
-            </label>
-            <input
-              class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
-              id="password"
-              type="password"
-              name="password"
-              placeholder="Enter your password"
-            />
-          </div>
-          <div class="flex items-center justify-between">
-              <button
-                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                type="submit"
-              >
-                Sign In
-              </button>   
-          </div>
-        </div>
-      </form>
-
-      <form action="register" method="post">
-        <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-1 ml-10">
-          <div class="mb-4">
-            <label class="block text-gray-700 text-sm font-bold mb-2" for="new-username">
-              Username
-            </label>
-            <input
-              class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-              id="new-username"
-              type="text"
-              name="username"
-              placeholder="Enter your new username"
-            />
-          </div>
-          <div class="mb-6">
-            <label class="block text-gray-700 text-sm font-bold mb-2" for="new-password">
-              Password
-            </label>
-            <input
-              class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
-              id="new-password"
-              type="password"
-              name="password"
-              placeholder="Enter your new password"
-            />
-          </div>
-          <div class="flex items-center justify-between">
-            <button
-              class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-              type="submit"
-            >
-              Create User
-            </button>
-          </div>
-        </div>
-      </form>
+      <form method="POST" action="{{ url_for('signupOrRegister') }}">
+        {{ formLogin.hidden_tag() }}<br>
+        {{ formLogin.username.label }} {{ formLogin.username(size=20) }}<br>
+        {{ formLogin.password.label }} {{ formLogin.password(size=20) }}<br>
+        <button type="submit" name="submit" value="Login">Login</button>
+    </form>
+    
+    <!-- Register Form -->
+    <form method="POST" action="{{ url_for('signupOrRegister') }}">
+        {{ formRegister.hidden_tag() }}<br>
+        {{ formRegister.username.label }} {{ formRegister.username(size=20) }}<br>
+        {{ formRegister.password.label }} {{ formRegister.password(size=20) }}<br>
+        <button type="submit" name="submit" value="Register">Register</button>
+    </form>
 
     </div>
-
-    {% if invalid %}
-      <div class="flex flex-col items-center justify-center mt-10">
-        <p>{{ error }}</p>
-      </div>
-    {% endif %}
     
 </body>
 </html>

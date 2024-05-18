@@ -1,5 +1,3 @@
-import hashlib
-import datetime
 from block import Block
 from transactions import Transaction
 
@@ -7,6 +5,7 @@ class Blockchain:
     def __init__(self):
         self.chain = []
         self.pending_transactions = []
+
         # generating first block in the block chain
         genesis_block = Block(0,[],"0")
         self.chain.append(genesis_block)

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blockchain Viewer</title>
+    <link href="../static/output.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <h1 class="text-4xl font-bold text-center text-gray-900 my-8">Blockchain Transactions</h1>
+    <div class="container mx-auto px-4">
+        {% for block in blockchain %}
+        <div class="bg-white shadow-md rounded-lg p-6 mb-6">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4">Block {{ block.index }}</h2>
+            <p class="text-gray-700"><strong>Hash:</strong> {{ block.hash }}</p>
+            <p class="text-gray-700"><strong>Previous Hash:</strong> {{ block.previous_hash }}</p>
+            <p class="text-gray-700"><strong>Timestamp:</strong> {{ block.timestamp }}</p>
+            <p class="text-gray-700"><strong>Nonce:</strong> {{ block.nonce }}</p>
+            <h3 class="text-xl font-medium text-gray-800 mt-4">Transactions:</h3>
+            <ul class="list-disc list-inside">
+                {% for transaction in block.transactions %}
+                <li class="text-gray-700">
+                    <strong>Sender:</strong> {{ transaction.sender }}<br>
+                </li>
+
+                <li class="text-gray-700">
+                    <strong>Receiver:</strong> {{ transaction.recipient }}<br>
+                </li>
+
+                <li class="text-gray-700">
+                    <strong>Amount:</strong> {{ transaction.amount }}
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="flex flex-row justify-center mt-8">
+        <form action="/homepage" method="POST" class="mr-4">
+            <input type="submit" class="cursor-pointer bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" value="Home Page">
+        </form>
+        <a href="{{ url_for('logout') }}" class="cursor-pointer bg-gray-800 hover:bg-gray-300 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Logout</a>
+    </div>  
+</body>
+</html>
