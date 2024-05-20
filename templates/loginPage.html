@@ -1,36 +1,71 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Blockchain Demo</title>
     <link href="../static/output.css" rel="stylesheet">
-
 </head>
 <body class="bg-gray-100">
-    
-    <div class="flex flex-col items-center justify-center mt-10 bg-gray-100">
-        <h1 class="text-4xl font-bold text-center mb-4">Welcome to a Simple Blockchain Demo</h1>
-        <h2 class="text-2xl text-center mb-2">Sign in or create a new user below</h2>
-        <h2 class="text-xl text-center">Each user starts off with 500 credits upon user creation. Credits can be used to trade with other users.</h2>
-    </div>
-    
+    <div class="container mx-auto py-10 min-h-screen flex flex-col justify-center items-center">
+        <div class="text-center">
+            <h1 class="text-4xl font-bold text-gray-900 mb-4">Welcome to a Simple Blockchain Demo</h1>
+            <h2 class="text-2xl text-gray-700 mb-2">Sign in or create a new user below</h2>
+            <h3 class="text-xl text-gray-600">Each user starts off with 500 credits upon user creation. Credits can be used to trade with other users.</h3>
+        </div>
 
-    <div class="flex flex-row items-center justify-center mt-10">
-      <form method="POST" action="{{ url_for('signupOrRegister') }}">
-        {{ formLogin.hidden_tag() }}<br>
-        {{ formLogin.username.label }} {{ formLogin.username(size=20) }}<br>
-        {{ formLogin.password.label }} {{ formLogin.password(size=20) }}<br>
-        <button type="submit" name="submit" value="Login">Login</button>
-    </form>
-    
-    <!-- Register Form -->
-    <form method="POST" action="{{ url_for('signupOrRegister') }}">
-        {{ formRegister.hidden_tag() }}<br>
-        {{ formRegister.username.label }} {{ formRegister.username(size=20) }}<br>
-        {{ formRegister.password.label }} {{ formRegister.password(size=20) }}<br>
-        <button type="submit" name="submit" value="Register">Register</button>
-    </form>
+        <div class="mt-10 flex flex-col md:flex-row justify-center items-center space-y-6 md:space-y-0 md:space-x-10">
 
+          <form method="POST" action="{{ url_for('signupOrRegister') }}" class="bg-white p-8 rounded-lg shadow-md w-full max-w-sm">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">Login</h2>
+                {{ formLogin.hidden_tag() }}
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="login-username">
+                        {{ formLogin.username.label }}
+                    </label>
+                    {{ formLogin.username(class = 'shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline', id='login-username') }}
+                </div>
+                <div class="mb-6">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="login-password">
+                        {{ formLogin.password.label }}
+                    </label>
+                    {{ formLogin.password(class = 'shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline', id='login-password') }}
+                </div>
+                <div class="flex items-center justify-between">
+                    <button type="submit" name="submit" value="login" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                        Login
+                    </button>
+                </div>
+            </form>
+
+            <form method="POST" action="{{ url_for('signupOrRegister') }}" class="bg-white p-8 rounded-lg shadow-md w-full max-w-sm">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4">Register</h2>
+                {{ formRegister.hidden_tag() }}
+                <div class="mb-4">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="register-username">
+                        {{ formRegister.username.label }}
+                    </label>
+                    {{ formRegister.username(class = 'shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline', id='register-username') }}
+                </div>
+                <div class="mb-6">
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="register-password">
+                        {{ formRegister.password.label }}
+                    </label>
+                    {{ formRegister.password(class = 'shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline', id='register-password') }}
+                </div>
+                <div class="flex items-center justify-between">
+                    <button type="submit" name="submit" value="register" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
+                        Register
+                    </button>
+                </div>
+            </form>   
+        </div>
+
+        {% if invalid %}
+          <div class="justify-center items-center container text-center md:w-1/3 mt-4 p-4 bg-red-100 border border-red-400 text-red-700">
+            <p>{{ msg }}</p>
+          </div>
+        {% endif %}
     </div>
-    
 </body>
 </html>

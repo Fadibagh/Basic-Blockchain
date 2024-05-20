@@ -40,12 +40,6 @@ class RegisterForm(FlaskForm):
 
     submit = SubmitField('Register')
 
-    def validate_username(self, username):
-        existing_user_username = User.query.filter_by(
-            username=username.data).first()
-        if existing_user_username:
-            raise ValidationError(
-                'That username already exists. Please choose a different one.')
         
 class LoginForm(FlaskForm):
     username = StringField(validators=[
@@ -66,30 +60,35 @@ def home():
      return redirect('signinOrRegister')
 
 
-@app.route('/signinOrRegister', methods=['POST', "GET"])
+@app.route('/signinOrRegister', methods=['POST', 'GET'])
 def signupOrRegister():
-     
-     formLogin = LoginForm()
-     formRegister = RegisterForm()
+    formLogin = LoginForm()
+    formRegister = RegisterForm()
 
+    if formLogin.validate_on_submit() and 'submit' in request.form and request.form['submit'] == 'login':
+        user = User.query.filter_by(username=formLogin.username.data.lower().strip()).first()
+        if user:
+            if bcrypt.check_password_hash(user.password, formLogin.password.data.strip()):
+                login_user(user)
+                return redirect(url_for('homepage'))
+            else:
+                return render_template('loginPage.html', formLogin=formLogin, formRegister=formRegister, invalid=True, msg="Incorrect Password.")
+        else:
+            return render_template('loginPage.html', formLogin=formLogin, formRegister=formRegister, invalid=True, msg="User Not Found.")
 
-     if formLogin.validate_on_submit() and 'submit' in request.form and request.form['submit'] == 'Login':
-          user = User.query.filter_by(username=formLogin.username.data.lower()).first()
-          if user:
-               if bcrypt.check_password_hash(user.password, formLogin.password.data):
-                    login_user(user)
-                    return redirect(url_for('homepage'))
-               
+    if formRegister.validate_on_submit() and 'submit' in request.form and request.form['submit'] == 'register':
+        existing_user = User.query.filter_by(username=formRegister.username.data.lower().strip()).first()
+        if existing_user:
+            return render_template('loginPage.html', formLogin=formLogin, formRegister=formRegister, invalid=True, msg="Account with that username already exists.")
+        
+        hashed_password = bcrypt.generate_password_hash(formRegister.password.data.strip()).decode('utf-8')
+        new_user = User(username=formRegister.username.data.lower().strip(), password=hashed_password)
+        db.session.add(new_user)
+        db.session.commit()
+        login_user(new_user)
+        return redirect(url_for('homepage'))
 
-     if formRegister.validate_on_submit() and 'submit' in request.form and request.form['submit'] == 'Register':
-          hashed_password = bcrypt.generate_password_hash(formRegister.password.data)
-          new_user = User(username=formRegister.username.data.lower(), password=hashed_password)
-          db.session.add(new_user)
-          db.session.commit()
-          login_user(new_user)
-          return redirect(url_for('homepage'))
-     
-     return render_template('loginPage.html', formLogin=formLogin, formRegister=formRegister)
+    return render_template('loginPage.html', formLogin=formLogin, formRegister=formRegister)
 
 @app.route('/logout', methods=['GET', 'POST'])
 @login_required
