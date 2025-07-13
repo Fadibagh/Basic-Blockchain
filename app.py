@@ -12,11 +12,17 @@ from dotenv import load_dotenv
 load_dotenv() 
 
 app = Flask(__name__, template_folder='templates')
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///userStorage.db'
+
+# Updated database configuration for Supabase PostgreSQL
+DATABASE_URL = os.environ.get('DATABASE_URL') or os.environ.get('SUPABASE_URL') or os.environ.get('POSTGRES_URL')
+if DATABASE_URL and DATABASE_URL.startswith("postgres://"):
+    DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
+
+app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL or 'sqlite:///userStorage.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.secret_key = os.environ.get('SECRET_KEY')
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
-
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -25,12 +31,15 @@ login_manager.login_view = 'login'
 blockchain = Blockchain()
 
 class User(db.Model, UserMixin):
-
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(20), unique=True, nullable=False)
     password = db.Column(db.String(80), nullable=False)
     balance = db.Column(db.Integer, default=500)
-    
+
+# Initialize database tables
+with app.app_context():
+    db.create_all()
+
 class RegisterForm(FlaskForm):
     username = StringField(validators=[
                            InputRequired(), Length(min=4, max=20)], render_kw={"placeholder": "Username"})
