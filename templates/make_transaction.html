@@ -1,51 +1,94 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>Make Transaction</title>
-    <link href="../static/output.css" rel="stylesheet">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-</head>
-<body class="bg-gray-100 font-sans">
-
+    <link
+      href="{{ url_for('static', filename='output.css') }}"
+      rel="stylesheet"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  </head>
+  <body class="bg-gray-100 font-sans">
     <div class="flex flex-col items-center justify-center min-h-screen">
-        <div class="bg-white shadow-lg rounded-lg p-8 mt-10">
-            <h1 class="text-2xl font-bold text-gray-800 mb-6">Create a Transaction</h1>
-            <h3 class="text-md mb-4 text-gray-600">Balance: {{ balance }}</h3>
+      <div class="bg-white shadow-lg rounded-lg p-8 mt-10">
+        <h1 class="text-2xl font-bold text-gray-800 mb-6">
+          Create a Transaction
+        </h1>
+        <h3 class="text-md mb-4 text-gray-600">Balance: {{ balance }}</h3>
 
-            <form action="/transactions/new?name={{ name }}" method="post" class="mb-4">
-                <label class="block text-gray-700 text-sm font-bold mb-2" for="recipient">Recipient:</label>
-                <input type="text" id="recipient" name="recipient" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-4" required>
+        <form
+          action="/transactions/new?name={{ name }}"
+          method="post"
+          class="mb-4"
+        >
+          <label
+            class="block text-gray-700 text-sm font-bold mb-2"
+            for="recipient"
+            >Recipient:</label
+          >
+          <input
+            type="text"
+            id="recipient"
+            name="recipient"
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-4"
+            required
+          />
 
-                <label class="block text-gray-700 text-sm font-bold mb-2" for="amount">Amount:</label>
-                <input type="number" id="amount" name="amount" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-4 leading-tight focus:outline-none focus:shadow-outline" required>
-                
-                <input type="submit" class="cursor-pointer bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" value="Submit">
-            </form>
-        
-            <div class="flex flex-row justify-between">
-                <form action="/homepage?name={{ name }}" method="post">
-                    <input type="submit" class="cursor-pointer bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" value="Home Page">
-                </form>
-                <a href="{{ url_for('logout') }}" class="cursor-pointer bg-gray-800 hover:bg-gray-800 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Logout</a>
-            </div>    
-            
+          <label class="block text-gray-700 text-sm font-bold mb-2" for="amount"
+            >Amount:</label
+          >
+          <input
+            type="number"
+            id="amount"
+            name="amount"
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-4 leading-tight focus:outline-none focus:shadow-outline"
+            required
+          />
 
-            {% if invalid %}
-            <div class="mt-4 p-4 bg-red-100 border border-red-400 text-red-700">
-                <p>{{ error }}</p>
-            </div>
-            {% endif %}
+          <input
+            type="submit"
+            class="cursor-pointer bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            value="Submit"
+          />
+        </form>
 
-            {% if success %}
-            <div class="mt-4 p-4 bg-green-100 border border-green-400 text-green-700">
-                <p>{{ msg }}</p>
-                <p>Transactions are mined in blocks on their own. Click view blockchain to see the entire blockchain history.</p>
-                <a href="/view/blockchain?name={{ name }}" class="inline-block border bg-blue-500 hover:bg-blue-800 transition ease-in-out text-white py-2 px-4 rounded">View Blockchain</a>
-            </div>
-            {% endif %}
+        <div class="flex flex-row justify-between">
+          <form action="/homepage?name={{ name }}" method="post">
+            <input
+              type="submit"
+              class="cursor-pointer bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              value="Home Page"
+            />
+          </form>
+          <a
+            href="{{ url_for('logout') }}"
+            class="cursor-pointer bg-gray-800 hover:bg-gray-800 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            >Logout</a
+          >
         </div>
-    </div>
 
-</body>
+        {% if invalid %}
+        <div class="mt-4 p-4 bg-red-100 border border-red-400 text-red-700">
+          <p>{{ error }}</p>
+        </div>
+        {% endif %} {% if success %}
+        <div
+          class="mt-4 p-4 bg-green-100 border border-green-400 text-green-700"
+        >
+          <p>{{ msg }}</p>
+          <p>
+            Transactions are mined in blocks on their own. Click view blockchain
+            to see the entire blockchain history.
+          </p>
+          <a
+            href="/view/blockchain?name={{ name }}"
+            class="inline-block border bg-blue-500 hover:bg-blue-800 transition ease-in-out text-white py-2 px-4 rounded"
+            >View Blockchain</a
+          >
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </body>
 </html>
