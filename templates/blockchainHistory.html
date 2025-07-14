@@ -8,6 +8,8 @@
       href="{{ url_for('static', filename='output.css') }}"
       rel="stylesheet"
     />
+    <!-- Fallback CDN in case static files don't load -->
+    <script src="https://cdn.tailwindcss.com"></script>
   </head>
   <body class="bg-gray-100">
     <h1 class="text-4xl font-bold text-center text-gray-900 my-8">
